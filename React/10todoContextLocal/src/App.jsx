@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 import { TodoProvider } from './contexts/TodoContext'
+import './App.css'
 import TodoForm from './components/TodoForm'
 import TodoItem from './components/TodoItem'
 
@@ -25,12 +25,17 @@ function App() {
 
 
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem("todos"))
+    const storedTodos = localStorage.getItem('todos');
 
-    if (todos && todos.length > 0) {
-      setTodos(todos)
+    if (storedTodos) {
+      try {
+        const parsedTodos = JSON.parse(storedTodos);
+        setTodos(parsedTodos);
+      } catch (error) {
+        console.error('Error parsing todos from localStorage:', error);
+      }
     }
-  }, [])
+  }, []);
   
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
