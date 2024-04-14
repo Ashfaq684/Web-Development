@@ -80,7 +80,7 @@ export class Service{
     
     async getPosts(queries = [Query.equal("status", "active")]) {
         try {
-            return await this.databases.listDocument(
+            return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries
@@ -93,7 +93,7 @@ export class Service{
 
     async uploadFile(file){
         try {
-            return await this.bucket.createFile(
+            return await this.storage.createFile(
                 conf.appwriteBucketId,
                 ID.unique(),
                 file
@@ -106,7 +106,7 @@ export class Service{
     
     async deleteFile(fileId){
         try {
-            await this.bucket.deleteFile(
+            await this.storage.deleteFile(
                 conf.appwriteBucketId,
                 fileId
             )
@@ -118,9 +118,9 @@ export class Service{
     }
 
     getFilePreview(fileId){
-        return this.bucket.getFilePreview(
+        return this.storage.getFilePreview(
             conf.appwriteBucketId,
-            fieldId
+            fileId
         )
     }
 }
