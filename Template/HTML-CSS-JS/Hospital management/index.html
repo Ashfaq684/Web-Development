@@ -93,30 +93,18 @@
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
               Designation
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-              <li><a class="dropdown-item active" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
+            <ul id="designation" class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"></ul>
           </div>
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
               Specialization
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-              <li><a class="dropdown-item active" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
+            <ul id="specialization" class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"></ul>
           </div>
         </div>
         <div class="col-md-8">
           <input id="search" type="text" placeholder="Search...">
-          <button>Search</button>
+          <button onclick="handleSearch()">Search</button>
           <div id="doctors" class="doctors mt-5"></div>
         </div>
       </div>
