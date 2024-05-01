@@ -33,9 +33,26 @@ const displayService = (services) => {
 
 
 const loadDoctors = (search) => {
-    fetch(`https://testing-8az5.onrender.com/doctor/list/?search=${search ? search : ""}`)
+    document.getElementById("doctors").innerHTML = "";
+    document.getElementById("spinner").style.display = "block";
+    fetch(
+        `https://testing-8az5.onrender.com/doctor/list/?search=${
+            search ? search : ""
+        }`
+    )
     .then((res) => res.json())
-    .then((data) => displayDoctors(data?.results))
+    .then((data) => {
+        if (data.results.length > 0) {
+            document.getElementById("spinner").style.display = "none";
+            document.getElementById("nodata").style.display = "none";
+            displayDoctors(data?.results);
+        } else {
+            document.getElementById("spinner").style.display = "none";
+            document.getElementById("doctors").innerHTML = "";
+            document.getElementById("nodata").style.display = "block";
+
+        }
+    })
     .catch((err) => console.log(err));
 };
 
@@ -52,7 +69,7 @@ const displayDoctors = (doctors) => {
             <p>
                 ${doctor?.specialization?.map((item) => (`<button>${item}</button>`))}
             </p>
-            <button>View Profile</button>
+            <button><a target="_blank" href="docDetails.html?doctorId=${doctor.id}">View Details</a></button>
         `;
         parent.appendChild(div);
     })
@@ -82,7 +99,8 @@ const loadSpecialization = () => {
             const parent = document.getElementById("specialization");
             const li = document.createElement("li");
             li.classList.add("dropdown-item");
-            li.innerText = item?.name;
+            li.innerHTML = `
+                <li onClick="loadDoctors('${item.name}')">${item.name}</li>`;
             parent.appendChild(li);
         })
     })
@@ -94,7 +112,31 @@ const handleSearch = () => {
     loadDoctors(value);
 }
 
+const loadReview = () => {
+    fetch("https://testing-8az5.onrender.com/doctor/review/")
+    .then((res) => res.json())
+    .then((data) => displayReview(data));
+}
+
+const displayReview = (reviews) => {
+    reviews.forEach((review) => {
+        const parent=document.getElementById("review-container");
+        const div = document.createElement("div");
+        div.classList.add("review-card");
+        div.innerHTML = `
+            <img src="./images/girl.png" alt="">
+            <h4>${review.reviewer}</h4>
+            <p>
+                ${review.body.slice(0, 100)}
+            </p>
+            <h6>${review.rating}</h6>
+        `;
+        parent.appendChild(div);
+    });
+}
+
 loadServices();
 loadDoctors();
 loadDesignation();
 loadSpecialization();
+loadReview();
