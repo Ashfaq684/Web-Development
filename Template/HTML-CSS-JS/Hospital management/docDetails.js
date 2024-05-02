@@ -1,5 +1,6 @@
 const getparams = () => {
     const param = new URLSearchParams(window.location.search).get("doctorId");
+    loadTime(param);
     fetch(`https://testing-8az5.onrender.com/doctor/list/${param}`)
     .then((res) => res.json())
     .then((data) => displayDetails(data));
@@ -55,4 +56,55 @@ const doctorReview = (reviews) => {
 }
 
 
+const loadTime = (id) => {
+    fetch(`https://testing-8az5.onrender.com/doctor/availabletime/?doctor_id=${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+        data.forEach((item) => {
+            const parent = document.getElementById("time-container");
+            const option = document.createElement("option");
+            option.value = item.id;
+            option.innerText = item.name;
+            parent.appendChild(option);
+        })
+    })
+    .catch((error) => {
+        console.error('Error fetching available time:', error);
+    });
+};
+
+const handleAppointment = () => {
+    const param = new URLSearchParams(window.location.search).get("doctorId");
+    const appointment_type = document.getElementsByName("appointment_type");
+    const selected = Array.from(appointment_type).find((button) => button.checked);
+
+    const symptom = document.getElementById("symptom").value;
+    const time = document.getElementById("time-container");
+    const selectedTime = time.options[time.selectedIndex];
+
+    const info = {
+        appointment_type: selected.value,
+        appointment_status: "Pending",
+        time: selectedTime.value,
+        symptom: symptom,
+        cancel: false,
+        paitent: 1,
+        doctor: param,
+    };
+
+    console.log(info);
+
+    fetch("https://testing-8az5.onrender.com/appointment/", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(info),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+    })
+};
+
+
 getparams();
+loadTime();
